@@ -1,0 +1,66 @@
+@page
+@model Puroguramu.App.Pages.Teacher.IndexModel
+
+@{
+    ViewData["Title"] = "Teacher Dashboard";
+}
+
+<h1>Teacher Dashboard</h1>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<hr/>
+<a asp-page="/Teacher/CreateLesson">Create lesson</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-start">
+                Title
+            </th>
+            <th class="text-center">
+                Students Completed / Total
+            </th>
+            <th class="text-end">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var lesson in Model.Lessons)
+    {
+        <tr>
+            <td class="text-start">
+                @lesson.Title
+            </td>
+            <td class="text-center">
+                @lesson.CompletedStudentCount / @Model.TotalStudents
+            </td>
+            <td class="d-flex justify-content-end gap-3 flex-wrap">
+                @if (!lesson.IsFirstLesson && !lesson.IsLastLesson)
+                {
+                    <a asp-page-handler="UpLesson" asp-route-lessonId=@lesson.LessonId>Up</a>
+                    <a asp-page-handler="DownLesson" asp-route-lessonId=@lesson.LessonId>Down</a>
+                }
+                else if (lesson.IsFirstLesson && !lesson.IsLastLesson)
+                {
+                    <a asp-page-handler="DownLesson" asp-route-lessonId=@lesson.LessonId>Down</a>
+                }
+                else if (lesson.IsLastLesson && !lesson.IsFirstLesson)
+                {
+                    <a asp-page-handler="UpLesson" asp-route-lessonId=@lesson.LessonId>Up</a>
+                }
+                <a asp-page="/Teacher/CreateExercise" asp-route-lessonId="@lesson.LessonId">Create exercise</a>
+                @if (lesson.IsPublished)
+                {
+                    <a asp-page-handler="HideLesson" asp-route-lessonId=@lesson.LessonId>Hide</a>
+                }
+                else
+                {
+                    <a asp-page-handler="PublishLesson" asp-route-lessonId=@lesson.LessonId>Publish</a>
+                }
+                <a asp-page="/Teacher/EditLesson" asp-route-lessonId="@lesson.LessonId">Edit</a>
+                <a class="delete-lesson" asp-page-handler="DeleteLesson" asp-route-lessonId=@lesson.LessonId>Delete</a>
+                <a class="reset-lesson" asp-page-handler="ResetLesson" asp-route-lessonId="@lesson.LessonId">Reset</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

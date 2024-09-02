@@ -1,0 +1,81 @@
+@page
+@model Puroguramu.App.Pages.Teacher.EditLessonModel
+
+@{
+    ViewData["Title"] = "Edit Lesson";
+    var exercises = Model.Lesson.Exercises;
+}
+
+<h1>Edit Lesson</h1>
+<a id="teacher-editLesson-reset" class="reset-lesson" asp-page-handler="ResetLesson" asp-route-lessonId="@Model.Lesson.LessonId">Reset lesson</a>
+<a asp-page="/Teacher/Index">Go to Dashboard</a>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<hr/>
+<div class="row">
+    <div class="col-12">
+        <form id="updateLessonForm" method="post">
+            <div class="form-floating">
+                <input asp-for="Input.Title" class="form-control" autocomplete="title" aria-required="true" />
+                <label asp-for="Input.Title"></label>
+                <span asp-validation-for="Input.Title" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.Description" class="form-control" autocomplete="description" aria-required="true" />
+                <label asp-for="Input.Description"></label>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+            <button id="updateLessonSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">Update</button>
+            <input type="hidden" asp-for="LessonId"/>
+        </form>
+    </div>
+</div>
+<h2 class="mt-3">Exercises</h2>
+<a asp-page="/Teacher/CreateExercise" asp-route-lessonId="@Model.LessonId">Create exercise</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-start">
+                Title
+            </th>
+            <th class="text-end">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var exercise in exercises)
+    {
+        <tr>
+            <td class="text-start">
+                @exercise.Title
+            </td>
+            <td class="d-flex justify-content-end gap-3 flex-wrap">
+                @if (!exercise.IsFirstExercise && !exercise.IsLastExercise)
+                {
+                    <a asp-page-handler="UpExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Up</a>
+                    <a asp-page-handler="DownExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Down</a>
+                }
+                else if (exercise.IsFirstExercise && !exercise.IsLastExercise)
+                {
+                    <a asp-page-handler="DownExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Down</a>
+                }
+                else if (exercise.IsLastExercise && !exercise.IsFirstExercise)
+                {
+                    <a asp-page-handler="UpExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Up</a>
+                }
+                @if (exercise.IsPublished)
+                {
+                    <a asp-page-handler="HideExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Hide</a>
+                }
+                else
+                {
+                    <a asp-page-handler="PublishExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Publish</a>
+                }
+                <a asp-page="/Teacher/EditExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId="@exercise.ExerciseId">Edit</a>
+                <a class="delete-exercise" asp-page-handler="DeleteExercise" asp-route-lessonId=@Model.Lesson.LessonId asp-route-exerciseId=@exercise.ExerciseId>Delete</a>
+                <a class="reset-exercise" asp-page-handler="ResetExercise" asp-route-lessonId="@Model.Lesson.LessonId" asp-route-exerciseId="@exercise.ExerciseId">Reset</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,9 @@
+include:
+  - project: 'lessons/info/ue19/ci'
+    ref: main
+    file:
+      - 'dotnet.yml'
+variables:
+  NET_VERSION: "6.0"
+  BUILD_DOCKER: "true"
+

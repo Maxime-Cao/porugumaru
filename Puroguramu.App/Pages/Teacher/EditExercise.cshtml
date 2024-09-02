@@ -1,0 +1,100 @@
+@page
+@model Puroguramu.App.Pages.Teacher.EditExerciseModel
+
+@{
+    ViewData["Title"] = "Edit Exercise";
+}
+
+<h1>Edit Exercise</h1>
+<a id="teacher-editExercise-reset" class="reset-exercise" asp-page-handler="ResetExercise" asp-route-lessonId="@Model.LessonId" asp-route-exerciseId="@Model.ExerciseId">Reset exercise</a>
+<a asp-page="/Teacher/Index">Go to Dashboard</a>
+<div class="row">
+    <div class="col-12">
+        <form id="updateExerciseForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.Title" class="form-control" autocomplete="title" aria-required="true"/>
+                <label asp-for="Input.Title"></label>
+                <span asp-validation-for="Input.Title" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <textarea asp-for="Input.Instructions" class="form-control custom-textarea" autocomplete="instructions" aria-required="true"></textarea>
+                <label asp-for="Input.Instructions"></label>
+                <span asp-validation-for="Input.Instructions" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <span class="text-muted">Difficulty</span>
+                <select class="form-select" asp-for="Input.Difficulty">
+                    @foreach (var difficulty in Model.Difficulties)
+                    {
+                        <option value="@difficulty">@difficulty</option>
+                    }
+                </select>
+                <span asp-validation-for="Input.Difficulty" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <h2>Instructions for creating the exercise template</h2>
+                <ul>
+                    <li>The template must contain the words "// code-insertion-point" where the student's attempt will be inserted</li>
+                    <li>The template must return an array of TestResult objects, where each TestResult represents the execution of one test</li>
+                    <li>Each TestResult must be composed of the name of the test case, the status of the test case and a message describing the test result</li>
+                    <li>The status of a test corresponds to an element of the TestStatus enumeration. 3 possibilities: not executed (TestResult.Inconclusive), failed (TestResult.Failed) and passed (TestResult.Passed)</li>
+                </ul>
+            </div>
+            <div class="form-floating">
+                <textarea readonly class="form-control custom-textarea" autocomplete="exampleTemplate" aria-required="false">// code-insertion-point
+                                                                                                                    
+public class Test
+{
+    public static TestResult Ensure(float b, int exponent, float expected)
+    {
+      TestStatus status = TestStatus.Passed;
+      float actual = float.NaN;
+      try
+      {
+         actual = Exercice.Power(b, exponent);
+         if(Math.Abs(actual - expected) > 0.00001f)
+         {
+             status = TestStatus.Failed;
+         }
+      }
+      catch(Exception ex)
+      {
+         status = TestStatus.Inconclusive;
+      }
+
+      return new TestResult(
+        string.Format("Power of {0} by {1} should be {2}", b, exponent, expected),
+        status,
+        status == TestStatus.Passed ? string.Empty : string.Format("Expected {0}. Got {1}.", expected, actual)
+      );
+    }
+}
+
+return new TestResult[] {
+  Test.Ensure(2, 4, 16.0f),
+  Test.Ensure(2, -4, 1.0f/16.0f)
+};</textarea>
+                <label>Example template</label>
+            </div>
+            <div class="form-floating">
+                <textarea asp-for="Input.Template" class="form-control custom-textarea" autocomplete="template" aria-required="true"></textarea>
+                <label asp-for="Input.Template"></label>
+                <span asp-validation-for="Input.Template" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <textarea asp-for="Input.Stub" class="form-control custom-textarea" autocomplete="stub" aria-required="true"></textarea>
+                <label asp-for="Input.Stub"></label>
+                <span asp-validation-for="Input.Stub" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <textarea asp-for="Input.Solution" class="form-control custom-textarea" autocomplete="solution" aria-required="true"></textarea>
+                <label asp-for="Input.Solution"></label>
+                <span asp-validation-for="Input.Solution" class="text-danger"></span>
+            </div>
+            <button id="updateExerciseSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">Update</button>
+            <input type="hidden" asp-for="LessonId"/>
+            <input type="hidden" asp-for="ExerciseId"/>
+        </form>
+    </div>
+</div>

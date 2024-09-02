@@ -1,0 +1,46 @@
+@page
+@model Puroguramu.App.Pages.Student.IndexModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<h1>Student Dashboard</h1>
+<hr />
+<table class="table">
+    <thead>
+    <tr>
+        <th class="text-start">
+            Title
+        </th>
+        <th class="text-center">
+            Exercises Completed / Available
+        </th>
+        <th class="text-end">
+            Actions
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var lesson in Model.Lessons)
+    {
+        <tr>
+            <td class="text-start">
+                @lesson.Title
+            </td>
+            
+            <td class="text-center">
+                @lesson.ExercisesCompletedCount / @lesson.ExercisesCount
+            </td>
+            
+            <td class="text-end">
+                <a id="student-dashboard-linktodetails" asp-page="/Student/LessonDetails" asp-route-lessonId="@lesson.LessonId">Details</a>
+                @if (lesson.NextExercise != Guid.Empty)
+                {
+                    <a asp-page="/Student/ExerciseDetails" asp-route-exerciseId="@lesson.NextExercise">Next exercise</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

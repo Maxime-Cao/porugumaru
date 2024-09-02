@@ -1,0 +1,50 @@
+@page
+@model Puroguramu.App.Pages.Student.DetailsModel
+
+@{
+    ViewData["Title"] = "Lesson Details";
+    var lesson = Model.StudentLesson;
+    var exercises = Model.StudentLesson.Exercises;
+}
+
+<h1>@lesson.Title</h1>
+<p>@lesson.Description</p>
+
+<a asp-page="/Student/Index" id="student-lessonDetails-linktodashboard">Go to Dashboard</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="text-start">
+            Title
+        </th>
+        <th class="text-center">
+            Difficulty
+        </th>
+        <th class="text-center">
+             Status
+        </th>
+        <th class="text-end">
+            Link
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var exercise in exercises) {
+        <tr>
+            <td class="text-start">
+                @exercise.Title
+            </td>
+            <td class="text-center">
+                @exercise.Difficulty
+            </td>
+            <td class="text-center">
+                @exercise.ExerciseStatus
+            </td>
+            <td class="text-end">
+                <a asp-page="/Student/ExerciseDetails" asp-route-exerciseId="@exercise.ExerciseId">Show</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

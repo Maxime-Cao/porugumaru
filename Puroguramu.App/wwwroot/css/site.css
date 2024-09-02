@@ -1,0 +1,138 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a {
+  color: #0077cc;
+}
+
+.form-control:focus {
+    border-color: #0077cc;
+    box-shadow: 0 0 0 0.2rem #0077cc;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.btn-link.nav-link:focus {
+  outline: black auto 1px;
+}
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+#delete-profile-picture-button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#profile-picture {
+    display: block;
+    max-width: 20rem;
+    max-height: 20rem;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#update-profile-button, #updateExerciseForm {
+    margin-top: 1rem;
+}
+
+#update-profile-button {
+    margin-bottom: 1rem;
+}
+
+#student-dashboard-linktodetails, #student-exerciseDetails-linktodashboard, #teacher-editLesson-reset, #teacher-editExercise-reset {
+    margin-right: 0.5rem;
+}
+
+#student-lessonDetails-linktodashboard
+{
+    margin-bottom: 1.5rem;
+}
+
+.custom-textarea {
+    margin-top: 1rem !important;
+    min-height: 15rem !important;
+    height: auto !important;
+}
+
+#attempts-section {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.ace_editor {
+    border: 1px solid lightgray;
+    margin: auto;
+    height: 256px;
+}
+.scrollmargin {
+    height: 80px;
+}
+.scrollmargin2 {
+    height: 180px;
+}
+
+.footer {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 60px;
+}

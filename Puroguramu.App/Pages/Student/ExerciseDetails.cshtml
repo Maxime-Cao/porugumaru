@@ -1,0 +1,137 @@
+@page
+@model Puroguramu.App.Pages.Student.ExerciseDetailsModel
+
+@{
+    ViewData["Title"] = "Exercise Details";
+    var exercise = Model.StudentExercise;
+}
+<section>
+    <div>
+        <h1>@exercise.Title</h1>
+        <h2>Difficulty : @exercise.Difficulty</h2>
+    </div>
+</section>
+    <section>
+        <p class="box content">
+            @exercise.Instructions
+        </p>
+        @if (Model.ExerciseResultStatus == "Started" || Model.ExerciseResultStatus == "Not Started")
+        {
+            <a id="show-solution" asp-page-handler="ShowSolution" asp-route-exerciseId=@Model.ExerciseId>Show solution</a>
+        }
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <div>
+                    <span>Status : </span>
+                    <strong>@Model.ExerciseResultStatus</strong>
+                </div>
+                <div>
+                    <div>
+                        @if (Model.ExerciseResultStatus == "Succeeded" || Model.ExerciseResultStatus == "Failed")
+                        {
+                            @if (Model.ExerciseResultStatus == "Succeeded")
+                            {
+                                <div id="ProposalEditor"><pre>// Your code :
+@Model.Input.Proposal</pre>
+<pre>// Solution :
+@exercise.Solution</pre>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="ProposalEditor"><pre>// Solution :
+@exercise.Solution</pre></div>
+                            }
+                        }
+                        else
+                        {
+                            <div id="ProposalEditor">@Model.Input.Proposal</div>
+                        }
+                        @if (Model.ExerciseResultStatus == "Started" || Model.ExerciseResultStatus == "Not Started")
+                        {
+                            <div>
+                                <button>Execute</button>
+                            </div>
+                        }
+                        <input id="Proposal" asp-for="Input.Proposal" type="hidden"></input>
+                    </div>
+                    <div>
+                        @if (Model.ExerciseResultStatus == "Succeeded")
+                        {
+                            <h4>Results</h4>
+                            @if (Model.TestResult.Any())
+                            {
+                                @foreach (var testResult in Model.TestResult)
+                                {
+                                    <div>
+                                        <h5><span>@testResult.Status : </span>&nbsp;@testResult.Label</h5>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div>
+                                    <h5>All tests passed</h5>
+                                </div>
+                            }
+                        }
+                        else if (Model.ExerciseResultStatus == "Started" && Model.TestResult.Any())
+                        {
+                            <h4>Results</h4>
+                            @foreach (var testResult in Model.TestResult)
+                            {
+                                <div>
+                                    <h5><span>@testResult.Status : </span>&nbsp;@testResult.Label</h5>
+                                    @if (testResult.HasError)
+                                    {
+                                        <p>@testResult.ErrorMessage</p>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <input type="hidden" asp-for="ExerciseId"/>
+            </div>
+        </form>
+        <a asp-page="/Student/Index" id="student-exerciseDetails-linktodashboard">Go to Dashboard</a>
+        @if (Model.NextExercise != Guid.Empty && (Model.ExerciseResultStatus == "Succeeded" || Model.ExerciseResultStatus == "Failed"))
+        {
+            <a asp-page="/Student/ExerciseDetails" asp-route-exerciseId="@Model.NextExercise">Next exercise</a>
+        }
+        @if (Model.Attempts.Any())
+        {
+            var attemptNumber = 1;
+            
+            <div id="attempts-section">
+                <h4>Attempts</h4>
+                @foreach (var attempt in Model.Attempts)
+                {
+                    <a asp-page="/Student/ExerciseAttemptDetails" asp-route-attemptId="@attempt.AttemptId" target="_blank">Attempt @attemptNumber</a>
+                    <br/>
+
+                    attemptNumber++;
+                }
+            </div>
+        }
+    </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js" integrity="sha512-hWCQiPFpU0dM1jkN2dkt/OrdSXO4KN5y2utMvF0ZkacWmRvbOlEygqBW0YiJwq/nn6iywh4XnMGMG6ESQYM7WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer>
+    document.addEventListener('DOMContentLoaded', (evt) => {
+         
+           const proposalEditor = ace.edit("ProposalEditor");
+           const proposalInput = document.getElementById("Proposal");
+           
+           proposalEditor.setTheme("ace/theme/xcode");
+           proposalEditor.session.setMode("ace/mode/csharp");
+           
+           proposalInput.value = proposalEditor.session.getValue();
+           proposalEditor.session.on('change', (evt) => {
+               proposalInput.value = proposalEditor.session.getValue();
+           });           
+    });
+</script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>

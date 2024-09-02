@@ -1,0 +1,42 @@
+@page
+@model Puroguramu.App.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container">
+    <div class="row align-items-center align-items-center">
+        <div class="col-md-4 text-center text-md-start">
+            <img src="~/img/logo/logo-puroguramu.png" alt="Logo Puroguramu" class="img-fluid"/>
+        </div>
+        <div class="col-md-8 text-center text-md-start">
+            <div class="description">
+                <h1>Welcome to Puroguramu</h1>
+                <p>
+                    Discover our platform, which offers a variety of interactive programming lessons and exercises so you can learn at your own rhythm.
+                    We currently have <strong>@Model.Home.NumberOfLessons lesson(s)</strong>, <strong>@Model.Home.NumberOfExercises exercise(s)</strong> and <strong>@Model.Home.NumberOfStudents registered student(s)</strong>.
+                </p>
+                @if (!Model.Home.IsAuthenticated)
+                {
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Register</a>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-secondary">Login</a>
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Model.Home.Role))
+                    {
+                        if (Model.Home.Role == "Student")
+                        {
+                            <a asp-page="/Student/Index" class="btn btn-primary">Go to Dashboard</a>
+                        }
+                        else if (Model.Home.Role == "Teacher")
+                        {
+                            <a asp-page="/Teacher/Index" class="btn btn-primary">Go to Dashboard</a>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

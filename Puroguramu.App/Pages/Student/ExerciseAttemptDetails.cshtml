@@ -1,0 +1,26 @@
+@page
+@model Puroguramu.App.Pages.Student.ExerciseAttemptDetailsModel
+
+@{
+    ViewData["Title"] = "Exercise Attempt Details";
+}
+
+<h1>Exercise Attempt Details</h1>
+
+<h2>Date and time : @Model.Attempt.Time</h2>
+<h2>Status : @Model.Attempt.Status</h2>
+
+<div id="DisplayAttempt">@Model.Attempt.AttemptContent</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js" integrity="sha512-hWCQiPFpU0dM1jkN2dkt/OrdSXO4KN5y2utMvF0ZkacWmRvbOlEygqBW0YiJwq/nn6iywh4XnMGMG6ESQYM7WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer>
+    document.addEventListener('DOMContentLoaded', (evt) => {
+         
+           const attempt = ace.edit("DisplayAttempt");
+           
+           attempt.setTheme("ace/theme/xcode");
+           attempt.session.setMode("ace/mode/csharp");    
+    });
+</script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
